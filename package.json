@@ -44,7 +44,8 @@
   },
   "homepage": "https://github.com/slick-ui/core#readme",
   "publishConfig": {
-    "registry": "https://registry.npmjs.org/"
+    "registry": "https://registry.npmjs.org/",
+        "access": "public
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^11.0.0",
@@ -109,9 +110,7 @@
     },
     "npm": {
       "publish": true,
-      "publishConfig": {
-        "access": "public"
-      }
+      
     },
     "github": {
       "release": true
@@ -165,5 +164,5 @@
         }
       ]
     ]
-  }
+  },
 }
