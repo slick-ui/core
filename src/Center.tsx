@@ -1,12 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import React, { FC } from 'react';
-import { View } from 'react-native';
-import {
-  BaseViewProps,
-  getMarginInset,
-  getPaddingInset,
-  Inset,
-} from './baseProps';
+import { StyleProp, View, ViewStyle } from 'react-native';
+import { BaseViewProps, getMarginInset, getPaddingInset } from './baseProps';
 
 /**
  * @interface CenterProps
@@ -35,16 +30,17 @@ const Center: FC<CenterProps> = ({
       {...rest}
       style={[
         style,
+        flex ? { flex } : {},
+        width ? { width } : {},
+        height ? { height } : {},
         {
-          flex,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: background,
-          width,
-          height,
         },
-        margin && (getMarginInset(margin) as Inset),
-        padding && (getPaddingInset(padding) as Inset),
+
+        margin && (getMarginInset(margin) as StyleProp<ViewStyle>),
+        padding && (getPaddingInset(padding) as StyleProp<ViewStyle>),
       ]}
     >
       {children}

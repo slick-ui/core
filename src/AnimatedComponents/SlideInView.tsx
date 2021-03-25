@@ -30,12 +30,6 @@ const SlideInView: FC<SlideInViewProps> = ({
   index,
 }) => {
   const value = useValue<number>(0);
-
-  console.log(
-    'delay + (index || 0) + delay :',
-    index,
-    delay + (index || 0) + delay
-  );
   useCode(
     () => [
       set(

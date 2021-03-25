@@ -34,6 +34,7 @@ const Circle: FC<CircleProps> = ({
       {...rest}
       style={[
         style,
+        flex ? { flex } : {},
         {
           flex,
           width: radius * 2,

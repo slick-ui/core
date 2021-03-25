@@ -69,17 +69,17 @@ const Highlight: FC<HighlightProps> = ({
         style={[
           style as StyleProp<ViewStyle>,
           // style,
-          { overflow: 'hidden' },
+          {
+            overflow: 'hidden',
+            backgroundColor: background,
+          },
           margin && (getMarginInset(margin) as StyleProp<ViewStyle>),
           padding && (getPaddingInset(padding) as StyleProp<ViewStyle>),
           border && (getBorderRadius(border) as StyleProp<ViewStyle>),
           centered && styles.alignCenter,
-          {
-            flex,
-            backgroundColor: background,
-            height,
-            width,
-          },
+          flex ? { flex } : {},
+          width ? { width } : {},
+          height ? { height } : {},
         ]}
       >
         {children}

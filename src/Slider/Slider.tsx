@@ -211,7 +211,6 @@ export default class Slider extends Component<SliderProps, StateProps> {
       LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     }
     this.setState({ index: this.state.index + 1 });
-    console.log('this.state.index:', this.state.index);
     this.slider.current?.scrollToIndex({
       index: this.state.index,
       animated: true,

@@ -37,8 +37,6 @@ export const PlaceholderLine: React.FC<PlaceholderLineProps> = ({
 
   const animationStyle = useAnimation();
 
-  console.log('animationStyle:', animationStyle);
-
   return (
     <View style={[computedStyle, style, styles.line]}>
       <Animated.View style={animationStyle} />

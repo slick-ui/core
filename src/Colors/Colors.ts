@@ -58,7 +58,6 @@ export const darkColors: BaseColors = {
  */
 export const useColors = () => {
   const theme = useColorScheme();
-  console.log('theme:', theme);
   const colors = useContext(ThemeContext);
   return theme === 'dark' ? colors.dark : colors.light;
 };

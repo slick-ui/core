@@ -89,31 +89,31 @@ export interface BaseAnimatedViewProps
   border?: AnimatedBorderInset;
 }
 
-export const getMarginInset = (margin: Inset | AnimatedInset) => ({
-  margin: margin.all,
-  marginHorizontal: margin.horizontal,
-  marginVertical: margin.vertical,
-  marginLeft: margin.left,
-  marginRight: margin.right,
-  marginTop: margin.top,
-  marginBottom: margin.bottom,
-});
+export const getMarginInset = (margin: Inset | AnimatedInset) => [
+  margin.all && { margin: margin.all },
+  margin.horizontal && { marginHorizontal: margin.horizontal },
+  margin.vertical && { marginVertical: margin.vertical },
+  margin.left && { marginLeft: margin.left },
+  margin.right && { marginRight: margin.right },
+  margin.top && { marginTop: margin.top },
+  margin.bottom && { marginBottom: margin.bottom },
+];
 
-export const getPaddingInset = (padding: Inset | AnimatedInset) => ({
-  padding: padding.all,
-  paddingHorizontal: padding.horizontal,
-  paddingVertical: padding.vertical,
-  paddingLeft: padding.left,
-  paddingRight: padding.right,
-  paddingTop: padding.top,
-  paddingBottom: padding.bottom,
-});
+export const getPaddingInset = (padding: Inset | AnimatedInset) => [
+  padding.all && { padding: padding.all },
+  padding.horizontal && { paddingHorizontal: padding.horizontal },
+  padding.vertical && { paddingVertical: padding.vertical },
+  padding.left && { paddingLeft: padding.left },
+  padding.right && { paddingRight: padding.right },
+  padding.top && { paddingTop: padding.top },
+  padding.bottom && { paddingBottom: padding.bottom },
+];
 
 export const getBorderRadius = (border: BorderInset | AnimatedBorderInset) =>
-  ({
-    borderRadius: border.all,
-    borderTopRightRadius: border.topRight,
-    borderTopLeftRadius: border.topLeft,
-    borderBottomLeftRadius: border.bottomLeft,
-    borderBottomRightRadius: border.bottomRight,
-  } as ViewStyle);
+  [
+    border.all && { borderRadius: border.all },
+    border.topRight && { borderTopRightRadius: border.topRight },
+    border.topLeft && { borderTopLeftRadius: border.topLeft },
+    border.bottomLeft && { borderBottomLeftRadius: border.bottomLeft },
+    border.bottomRight && { borderBottomRightRadius: border.bottomRight },
+  ] as ViewStyle;

@@ -115,7 +115,6 @@ export interface SlideModalProps {
 
 const SlideModal: React.FC<SlideModalProps> = (props) => {
   const [isVisible, setIsVisible] = useState(false);
-  console.log('isVisible:', isVisible);
   // Props
   const {
     visible,
@@ -134,7 +133,6 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
   } = props;
 
   useEffect(() => {
-    console.log('visible:', visible);
     if (visible) {
       setIsVisible(visible);
     }

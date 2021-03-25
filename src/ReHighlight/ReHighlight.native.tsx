@@ -1,5 +1,6 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { FC } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native';
 import { TapGestureHandler, State } from 'react-native-gesture-handler';
 import Animated, { Easing, timing, useValue } from 'react-native-reanimated';
 import {
@@ -58,6 +59,7 @@ const ReHighlight: FC<Props> = ({
   style,
   width,
   height,
+  background,
   flex,
   border,
   disabled = false,
@@ -109,12 +111,13 @@ const ReHighlight: FC<Props> = ({
         pointerEvents={!disabled ? undefined : 'none'}
         style={[
           style,
-          // eslint-disable-next-line react-native/no-inline-styles
-          { overflow: 'hidden' },
-          margin && getMarginInset(margin),
-          padding && getPaddingInset(padding),
-          border && getBorderRadius(border),
-          { flex, width, height },
+          { overflow: 'hidden', backgroundColor: background },
+          margin ? (getMarginInset(margin) as StyleProp<ViewStyle>) : [],
+          padding ? (getPaddingInset(padding) as StyleProp<ViewStyle>) : [],
+          border ? (getBorderRadius(border) as StyleProp<ViewStyle>) : [],
+          flex ? { flex } : {},
+          width ? { width } : {},
+          height ? { height } : {},
         ]}
       >
         {children}
