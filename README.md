@@ -11,11 +11,10 @@ npm install @slick-ui/core
 ## Usage
 
 ```js
-import Core from "@slick-ui/core";
+import {} from "@slick-ui/core";
 
 // ...
 
-const result = await Core.multiply(3, 7);
 ```
 
 ## Contributing
