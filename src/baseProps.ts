@@ -79,7 +79,7 @@ export interface BasePressableProps extends PressableProps {
  * BaseViewProps
  */
 export interface BaseAnimatedViewProps
-  extends Animated.AnimateProps<ViewStyle, ViewProps> {
+  extends Animated.AnimateProps<ViewProps> {
   background?: string | Animated.Node<string>;
   padding?: AnimatedInset;
   margin?: AnimatedInset;

@@ -14,5 +14,5 @@ export { default as Circle, CircleProps } from './Circle';
 export { default as Center, CenterProps } from './Center';
 export { default as Highlight, HighlightProps } from './Highlight';
 export { default as Switch, SwitchProps } from './Switch';
-export { default as Icon } from './Icon';
+export { default as Icon, IconType } from './Icon';
 export { default as Stepper, StepperProps } from './Stepper';

@@ -1,1 +1,2 @@
-export { default as ReHighlight } from './ReHighlight.native';
+export { default as ReHighlight } from './ReHighlight';
+export * from './hooks';

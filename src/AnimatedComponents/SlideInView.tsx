@@ -1,19 +1,19 @@
 import React, { FC } from 'react';
-import type { StyleProp, ViewStyle } from 'react-native';
+import { useEffect } from 'react';
+import type { ViewProps } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
-  set,
-  useCode,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
-import { timing, useValue } from 'react-native-redash';
 import { Sizes } from '../metrics';
 
 /**
  * @interface SlideInViewProps
  */
-interface SlideInViewProps {
-  style?: StyleProp<Animated.AnimateStyle<ViewStyle>>;
+export interface SlideInViewProps extends Animated.AnimateProps<ViewProps> {
   delay?: number;
   direction?: 'horizontal' | 'vertical';
   index?: number;
@@ -23,40 +23,38 @@ interface SlideInViewProps {
  * SlideInView
  */
 const SlideInView: FC<SlideInViewProps> = ({
-  style: st,
+  style,
   delay = 100,
   direction = 'vertical',
   children,
   index,
+  ...rest
 }) => {
-  const value = useValue<number>(0);
-  useCode(
-    () => [
-      set(
-        value,
-        timing({
-          to: 1,
-          duration: delay + (index || 0) * ((delay || 0) / 4),
-        })
-      ),
-    ],
-    []
+  const value = useSharedValue(0);
+
+  useEffect(() => {
+    value.value = withTiming(1, {
+      duration: delay + (index || 0) * ((delay || 0) / 4),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const animatedStyles = useAnimatedStyle(() => {
+    const translate = interpolate(
+      value.value,
+      [0, 1],
+      [Sizes.SIZE_100, 0],
+      Extrapolate.CLAMP
+    );
+    return direction === 'horizontal'
+      ? { opacity: value.value, transform: [{ translateX: translate }] }
+      : { opacity: value.value, transform: [{ translateY: translate }] };
+  }, [direction]);
+  return (
+    <Animated.View {...rest} style={[style, animatedStyles]}>
+      {children}
+    </Animated.View>
   );
-
-  const translate = interpolate(value, {
-    inputRange: [0, 1],
-    outputRange: [Sizes.SIZE_100, 0],
-    extrapolate: Extrapolate.CLAMP,
-  });
-
-  const style: StyleProp<Animated.AnimateStyle<ViewStyle>> = [
-    st,
-    { opacity: value },
-    direction === 'horizontal'
-      ? { transform: [{ translateX: translate }] }
-      : { transform: [{ translateY: translate }] },
-  ];
-  return <Animated.View {...{ style }}>{children}</Animated.View>;
 };
 
 export default SlideInView;

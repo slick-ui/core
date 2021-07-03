@@ -19,52 +19,28 @@ export type FontWeight =
 /**
  * @interface TextProps
  */
-export interface TextProps extends Animated.AnimateProps<{}, Props> {
-  color?: string | Animated.Node<string | undefined>;
-  weight?: FontWeight | Animated.Node<FontWeight | undefined>;
-  fontSize?: number | Animated.Node<number | undefined>;
+export interface TextProps extends Animated.AnimateProps<Props> {
+  color?: string;
+  weight?: FontWeight;
+  fontSize?: number;
   margin?: AnimatedInset;
   padding?: AnimatedInset;
-  textTransform?:
-    | 'none'
-    | 'capitalize'
-    | 'uppercase'
-    | 'lowercase'
-    | Animated.Node<
-        'none' | 'capitalize' | 'uppercase' | 'lowercase' | undefined
-      >;
-  letterSpacing?: number | Animated.Node<number | undefined>;
-  textAlign?:
-    | 'left'
-    | 'right'
-    | 'center'
-    | 'auto'
-    | 'justify'
-    | Animated.Node<
-        'left' | 'right' | 'center' | 'auto' | 'justify' | undefined
-      >;
-  textAlignVertical?:
-    | 'bottom'
-    | 'top'
-    | 'center'
-    | 'auto'
-    | Animated.Node<'bottom' | 'top' | 'center' | 'auto' | undefined>;
-  lineHeight?: number | Animated.Node<number | undefined>;
-  radius?: number | Animated.Node<number | undefined>;
+  textTransform?: 'none' | 'capitalize' | 'uppercase' | 'lowercase';
+  letterSpacing?: number;
+  textAlign?: 'left' | 'right' | 'center' | 'auto' | 'justify';
+
+  textAlignVertical?: 'bottom' | 'top' | 'center' | 'auto';
+
+  lineHeight?: number;
+  radius?: number;
   textDecorationLine?:
     | 'none'
     | 'underline'
     | 'line-through'
-    | 'underline line-through'
-    | Animated.Node<
-        | 'none'
-        | 'underline'
-        | 'line-through'
-        | 'underline line-through'
-        | undefined
-      >;
+    | 'underline line-through';
+
   textRef?: React.LegacyRef<Animated.Text>;
-  backgroundColor?: string | Animated.Node<string | undefined>;
+  backgroundColor?: string;
 }
 
 /**

@@ -19,14 +19,7 @@ const AppSub = () => {
 
   return (
     <Center style={{ flex: 1 }} background={colors.background}>
-      <ReHighlight
-        width={200}
-        height={50}
-        background={colors.lightBackground}
-        margin={{ all: 40 }}
-        border={{ all: 40 }}
-        onPress={onBack}
-      >
+      <ReHighlight onPress={onBack}>
         <Center flex={1}>
           <Text color={colors.darkText}>Open Half Modal</Text>
         </Center>

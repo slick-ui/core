@@ -45,7 +45,7 @@ export interface AccordionProps<T = any> {
   align?: 'top' | 'center' | 'bottom';
   duration?: number;
   easing?: string;
-  underlayColor?: string;
+  overlayColor?: string;
   disabled?: boolean;
   expandFromBottom?: boolean;
   expandMultiple?: boolean;
@@ -102,7 +102,7 @@ export default class Accordion extends Component<AccordionProps> {
       sectionContainerStyle,
       expandFromBottom,
       sections,
-      underlayColor,
+      overlayColor,
       onAnimationEnd,
       renderContent,
       renderHeader,
@@ -130,7 +130,7 @@ export default class Accordion extends Component<AccordionProps> {
 
             <ReHighlight
               onPress={() => this._toggleSection(key)}
-              underlay={underlayColor}
+              overlayColor={overlayColor}
             >
               {renderHeader(
                 section,

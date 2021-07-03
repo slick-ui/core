@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import type { StyleProp, TextStyle } from 'react-native';
+import type { IconProps as BaseIconProps } from 'react-native-vector-icons/Icon';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -27,7 +27,7 @@ export type IconType =
   | 'Fontisto'
   | 'Oct';
 
-export interface IconProps {
+export interface IconProps extends BaseIconProps {
   /**
    * @description Icon Type
    * @default Ion
@@ -35,32 +35,6 @@ export interface IconProps {
    * @memberof IconProps
    */
   type?: IconType;
-  /**
-   * @description Size of the Icon
-   * @type {number}
-   * @memberof IconProps
-   */
-  size?: number;
-  /**
-   * @description Color of the icon
-   * @default BLACK
-   * @type {string}
-   * @memberof IconProps
-   */
-  color?: string;
-  /**
-   * Icon Style
-   * @type {StyleProp<TextStyle>}
-   * @memberof IconProps
-   */
-  style?: StyleProp<TextStyle>;
-  /**
-   * @description Icon Name
-   * @type {string}
-   * @memberof IconProps
-   */
-  name: string;
-  testID?: string;
 }
 
 /**
@@ -68,34 +42,32 @@ export interface IconProps {
  */
 export default class Icon extends Component<IconProps> {
   render() {
-    const { color, size, style, name, testID, type } = this.props;
+    const { type, ...rest } = this.props;
     switch (type) {
       case 'AntDesign':
-        return <AntDesign {...{ color, size, style, name, testID }} />;
+        return <AntDesign {...rest} />;
       case 'Entypo':
-        return <Entypo {...{ color, size, style, name, testID }} />;
+        return <Entypo {...rest} />;
       case 'Evil':
-        return <EvilIcons {...{ color, size, style, name, testID }} />;
+        return <EvilIcons {...rest} />;
       case 'Feather':
-        return <Feather {...{ color, size, style, name, testID }} />;
+        return <Feather {...rest} />;
       case 'FontAwesome':
-        return <FontAwesome {...{ color, size, style, name, testID }} />;
+        return <FontAwesome {...rest} />;
       case 'FontAwesome5':
-        return <FontAwesome5 {...{ color, size, style, name, testID }} />;
+        return <FontAwesome5 {...rest} />;
       case 'Fontisto':
-        return <Fontisto {...{ color, size, style, name, testID }} />;
+        return <Fontisto {...rest} />;
       case 'Material':
-        return <MaterialIcons {...{ color, size, style, name, testID }} />;
+        return <MaterialIcons {...rest} />;
       case 'MaterialCommunity':
-        return (
-          <MaterialCommunityIcons {...{ color, size, style, name, testID }} />
-        );
+        return <MaterialCommunityIcons {...rest} />;
       case 'Oct':
-        return <Octicons {...{ color, size, style, name, testID }} />;
+        return <Octicons {...rest} />;
       case 'SimpleLine':
-        return <SimpleLineIcons {...{ color, size, style, name, testID }} />;
+        return <SimpleLineIcons {...rest} />;
       default:
-        return <IonIcons {...{ color, size, style, name, testID }} />;
+        return <IonIcons {...rest} />;
     }
   }
 }

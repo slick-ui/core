@@ -1,30 +1,20 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleProp, ViewStyle, StyleSheet, Modal } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import Animated, {
-  Easing,
-  Value,
-  Clock,
-  useCode,
-  set,
-  cond,
-  neq,
-  and,
-  not,
-  clockRunning,
-  call,
+  Extrapolate,
   interpolate,
+  useAnimatedStyle,
 } from 'react-native-reanimated';
-import { timing } from 'react-native-redash';
+import { usePopupHook } from './hooks';
 
 type Insets = 'never' | 'always';
 
 /**
  * @export
- * @interface SlideModalProps
+ * @interface PopupModalProps
  */
-export interface SlideModalProps {
+export interface PopupModalProps {
   /**
    * @description Visibility of the modal
    * @type {boolean}
@@ -99,7 +89,7 @@ export interface SlideModalProps {
   fullScreen?: boolean;
 }
 
-const SlideModal: React.FC<SlideModalProps> = (props) => {
+const SlideModal: React.FC<PopupModalProps> = (props) => {
   const [isVisible, setIsVisible] = useState(false);
   // Props
   const {
@@ -125,48 +115,27 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
   }, [visible]);
 
   // Animation
-  const { value, clock, animated } = useMemo(
-    () => ({
-      value: new Value(0),
-      clock: new Clock(),
-      animated: new Value(1),
-    }),
-    []
-  );
-  const opacity = value;
-
-  const scale = interpolate(value, {
-    inputRange: [0, 1],
-    outputRange: animationType === 'popIn' ? [0, 1] : [1.4, 1],
+  const [opacity] = usePopupHook(visible, duration, ([val]) => {
+    if (val !== 0) return;
+    setIsVisible(false);
   });
 
-  useCode(
-    () => [
-      cond(
-        neq(animated, 0),
-        [
-          set(
-            value,
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
 
-            timing({
-              from: value,
-              to: visible ? 1 : 0,
-              duration,
-              easing: Easing.linear,
-              clock,
-            })
-          ),
-          cond(and(not(clockRunning(clock)), !visible ? 1 : 0), [
-            call([], () => {
-              setIsVisible(false);
-            }),
-          ]),
-        ],
-        set(value, visible ? 1 : 0)
-      ),
-    ],
-    [visible]
-  );
+  const childAnimatedStyles = useAnimatedStyle(() => {
+    const scale = interpolate(
+      opacity.value,
+      [0, 1],
+      animationType === 'popIn' ? [1.2, 1] : [1, 1.2],
+      Extrapolate.CLAMP
+    );
+    return {
+      opacity: opacity.value,
+      transform: [{ scale }],
+    };
+  });
 
   return (
     <Modal
@@ -185,7 +154,7 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
         style={[
           styles.topContainer,
           {
-            opacity,
+            alignItems: 'center',
             justifyContent:
               alginChildren === 'top'
                 ? 'flex-start'
@@ -193,6 +162,7 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
                 ? 'flex-end'
                 : 'center',
           },
+          animatedStyles,
         ]}
       >
         {!fullScreen && (
@@ -206,15 +176,15 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
 
         <Animated.View
           style={[
-            style,
             {
               position: 'absolute',
               backgroundColor,
-              transform: [{ scale }],
             },
+            style,
             fullScreen && {
               flex: 1,
             },
+            childAnimatedStyles,
           ]}
         >
           {children}

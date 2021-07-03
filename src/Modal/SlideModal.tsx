@@ -1,30 +1,8 @@
-/* eslint-disable react-native/no-inline-styles */
-import React, { useMemo, useEffect, useState } from 'react';
-import {
-  StyleProp,
-  ViewStyle,
-  StyleSheet,
-  Dimensions,
-  Modal,
-} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleProp, ViewStyle, StyleSheet, Modal } from 'react-native';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
-import Animated, {
-  Easing,
-  Value,
-  Clock,
-  useCode,
-  set,
-  cond,
-  neq,
-  and,
-  not,
-  clockRunning,
-  call,
-  interpolate,
-} from 'react-native-reanimated';
-import { timing } from 'react-native-redash';
-
-const { height, width: WIDTH } = Dimensions.get('screen');
+import Animated, { useAnimatedStyle } from 'react-native-reanimated';
+import { useSlideHook } from './hooks';
 
 type Insets = 'never' | 'always';
 
@@ -121,7 +99,7 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
     alginChildren = 'bottom',
     backgroundBackEnabled = false,
     style = { width: '100%', height: '100%', backgroundColor: 'white' },
-    duration = 400,
+    duration = 250,
     animationType = 'slideInBottom',
     onBack,
     forceInset = { top: 'never', bottom: 'never' },
@@ -138,56 +116,26 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
     }
   }, [visible]);
 
-  // Animation
-  const { value, clock, animated } = useMemo(
-    () => ({
-      value: new Value(0),
-      clock: new Clock(),
-      animated: new Value(1),
-    }),
-    []
+  // Animation Values
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, translateX, translateY] = useSlideHook(
+    visible,
+    duration,
+    animationType,
+    ([val]) => {
+      if (val !== 0) return;
+      setIsVisible(false);
+    }
   );
-  const opacity = value;
 
-  const translateY = ['slideInLeft', 'SlideInRight'].includes(animationType)
-    ? 0
-    : interpolate(value, {
-        inputRange: [0, 1],
-        outputRange: [animationType === 'slideInTop' ? -height : height, 0],
-      });
-  const translateX = ['slideInTop', 'SlideInBottom'].includes(animationType)
-    ? 0
-    : interpolate(value, {
-        inputRange: [0, 1],
-        outputRange: [animationType === 'slideInLeft' ? -WIDTH : WIDTH, 0],
-      });
-
-  useCode(
-    () => [
-      cond(
-        neq(animated, 0),
-        [
-          set(
-            value,
-            timing({
-              from: value,
-              to: visible ? 1 : 0,
-              duration,
-              easing: Easing.linear,
-              clock,
-            })
-          ),
-          cond(and(not(clockRunning(clock)), !visible ? 1 : 0), [
-            call([], () => {
-              setIsVisible(false);
-            }),
-          ]),
-        ],
-        set(value, visible ? 1 : 0)
-      ),
+  // animated styles
+  const animatedStyles = useAnimatedStyle(() => ({
+    // opacity: value.value,
+    transform: [
+      { translateX: translateX.value },
+      { translateY: translateY.value },
     ],
-    [visible]
-  );
+  }));
 
   return (
     <Modal
@@ -206,7 +154,6 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
         style={[
           styles.topContainer,
           {
-            opacity,
             justifyContent:
               alginChildren === 'top'
                 ? 'flex-start'
@@ -227,21 +174,13 @@ const SlideModal: React.FC<SlideModalProps> = (props) => {
 
         <Animated.View
           style={[
+            animatedStyles,
             style,
             {
-              position: 'absolute',
               backgroundColor,
             },
             fullScreen && {
               flex: 1,
-            },
-            (animationType === 'slideInBottom' ||
-              animationType === 'slideInTop') && {
-              transform: [{ translateY }],
-            },
-            (animationType === 'slideInLeft' ||
-              animationType === 'slideInRight') && {
-              transform: [{ translateX }],
             },
           ]}
         >
@@ -257,6 +196,9 @@ export default SlideModal;
 const styles = StyleSheet.create({
   topContainer: {
     ...StyleSheet.absoluteFillObject,
+  },
+  modal: {
+    position: 'absolute',
   },
   back: {
     width: '100%',

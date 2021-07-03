@@ -8,7 +8,11 @@ import {
   View,
   GestureResponderEvent,
 } from 'react-native';
-import Animated, { useValue, timing, Easing } from 'react-native-reanimated';
+import Animated, {
+  useSharedValue,
+  withTiming,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import {
   BasePressableProps,
   getBorderRadius,
@@ -43,32 +47,27 @@ const Highlight: FC<HighlightProps> = ({
   background,
   ...rest
 }) => {
-  const opacity = useValue(0);
+  const opacity = useSharedValue(0);
 
   const animateIn = (e: GestureResponderEvent) => {
-    timing(opacity, {
-      toValue: 1,
-      duration: 50,
-      easing: Easing.linear,
-    }).start();
+    opacity.value = withTiming(1, { duration: 50 });
     onPressIn?.(e);
   };
 
   const animateOut = (e: GestureResponderEvent) => {
-    timing(opacity, {
-      toValue: 0,
-      duration: 500,
-      easing: Easing.linear,
-    }).start();
+    opacity.value = withTiming(0, { duration: 400 });
     onPressOut?.(e);
   };
+
+  const animatedStyles = useAnimatedStyle(() => ({
+    opacity: opacity.value,
+  }));
 
   return (
     <Pressable onPressIn={animateIn} onPressOut={animateOut} {...rest}>
       <View
         style={[
           style as StyleProp<ViewStyle>,
-          // style,
           {
             overflow: 'hidden',
             backgroundColor: background,
@@ -84,7 +83,11 @@ const Highlight: FC<HighlightProps> = ({
       >
         {children}
         <Animated.View
-          style={[styles.absolute, { backgroundColor: underlay, opacity }]}
+          style={[
+            styles.absolute,
+            animatedStyles,
+            { backgroundColor: underlay },
+          ]}
         />
       </View>
     </Pressable>
