@@ -5,13 +5,13 @@ import { Animated, Easing, EasingFunction } from 'react-native';
  * IndicatorProps
  */
 export interface IndicatorProps {
-  animationEasing: EasingFunction;
-  animationDuration: number;
-  hideAnimationDuration: number;
-  animating: boolean;
-  interaction: boolean;
-  hidesWhenStopped: boolean;
-  renderComponent: (data: {
+  animationEasing?: EasingFunction;
+  animationDuration?: number;
+  hideAnimationDuration?: number;
+  animating?: boolean;
+  interaction?: boolean;
+  hidesWhenStopped?: boolean;
+  renderComponent?: (data: {
     index: number;
     count: number;
     progress: Animated.Value;
@@ -156,7 +156,7 @@ export default class Indicator extends PureComponent<
     Animated.timing(progress, {
       useNativeDriver: true,
       isInteraction: interaction,
-      duration: (1 - this.savedValue) * animationDuration,
+      duration: (1 - this.savedValue) * animationDuration!,
       toValue: 1,
     }).start(({ finished }) => {
       if (finished) {

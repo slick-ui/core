@@ -7,8 +7,8 @@ import styles from './styles';
  * PulseIndicatorProps
  */
 export interface PulseIndicatorProps extends IndicatorProps {
-  color: string;
-  size: number;
+  color?: string;
+  size?: number;
 }
 export default class PulseIndicator extends PureComponent<PulseIndicatorProps> {
   static defaultProps = {
@@ -37,7 +37,7 @@ export default class PulseIndicator extends PureComponent<PulseIndicatorProps> {
     let pulseStyle = {
       height: size,
       width: size,
-      borderRadius: size / 2,
+      borderRadius: size! / 2,
       backgroundColor: color,
       transform: [
         {

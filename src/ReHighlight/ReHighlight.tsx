@@ -5,10 +5,10 @@ import { TapGestureHandler } from 'react-native-gesture-handler';
 import { useHighlight } from './hooks';
 
 /**
- * @interface ReButtonProps
+ * @interface ReHighlightProps
  *
  */
-interface ReButtonProps extends Animated.AnimateProps<ViewProps> {
+export interface ReHighlightProps extends Animated.AnimateProps<ViewProps> {
   /**
    * overlay color
    * @memberof ReButtonProps
@@ -49,7 +49,7 @@ interface ReButtonProps extends Animated.AnimateProps<ViewProps> {
 /**
  * ReButton
  */
-const ReButton: FC<ReButtonProps> = (props) => {
+const ReButton: FC<ReHighlightProps> = (props) => {
   const {
     children,
     overlayColor = '#00000040',
