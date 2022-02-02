@@ -16,7 +16,7 @@ export interface IndicatorProps {
     count: number;
     progress: Animated.Value;
   }) => ReactNode;
-  count: number;
+  count?: number;
   style?: any;
 }
 
@@ -173,7 +173,7 @@ export default class Indicator extends PureComponent<
 
   renderComponent(_: any, index: number) {
     let { progress } = this.state;
-    let { renderComponent, count } = this.props;
+    let { renderComponent, count = 4 } = this.props;
 
     if (typeof renderComponent === 'function') {
       return renderComponent({ index, count, progress });

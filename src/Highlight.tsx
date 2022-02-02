@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ViewStyle,
   Pressable,
-  View,
   GestureResponderEvent,
 } from 'react-native';
 import Animated, {
@@ -64,32 +63,30 @@ const Highlight: FC<HighlightProps> = ({
   }));
 
   return (
-    <Pressable onPressIn={animateIn} onPressOut={animateOut} {...rest}>
-      <View
-        style={[
-          style as StyleProp<ViewStyle>,
-          {
-            overflow: 'hidden',
-            backgroundColor: background,
-          },
-          margin && (getMarginInset(margin) as StyleProp<ViewStyle>),
-          padding && (getPaddingInset(padding) as StyleProp<ViewStyle>),
-          border && (getBorderRadius(border) as StyleProp<ViewStyle>),
-          centered && styles.alignCenter,
-          flex ? { flex } : {},
-          width ? { width } : {},
-          height ? { height } : {},
-        ]}
-      >
-        {children}
-        <Animated.View
-          style={[
-            styles.absolute,
-            animatedStyles,
-            { backgroundColor: underlay },
-          ]}
-        />
-      </View>
+    <Pressable
+      onPressIn={animateIn}
+      onPressOut={animateOut}
+      {...rest}
+      style={[
+        style as StyleProp<ViewStyle>,
+        {
+          overflow: 'hidden',
+          backgroundColor: background,
+        },
+        margin && (getMarginInset(margin) as StyleProp<ViewStyle>),
+        padding && (getPaddingInset(padding) as StyleProp<ViewStyle>),
+        border && (getBorderRadius(border) as StyleProp<ViewStyle>),
+        centered && styles.alignCenter,
+        flex ? { flex } : {},
+        width ? { width } : {},
+        height ? { height } : {},
+      ]}
+    >
+      {children}
+      <Animated.View
+        pointerEvents="none"
+        style={[styles.absolute, animatedStyles, { backgroundColor: underlay }]}
+      />
     </Pressable>
   );
 };
